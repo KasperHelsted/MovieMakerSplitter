@@ -2,10 +2,10 @@
 using System.Xml.Serialization;
 using System.Collections.Generic;
 
-namespace WLMPModels
+namespace MovieMakerSplitter.WLMPModels
 {
-    [XmlRoot(ElementName = "BoundPropertyFloatElement")]
-    public class BoundPropertyFloatElement
+    [XmlRoot(ElementName = "BoundPropertyStringElement")]
+    public class BoundPropertyStringElement
     {
         [XmlAttribute(AttributeName = "Value")]
         public string Value { get; set; }

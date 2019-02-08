@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 using System.Collections.Generic;
 
-namespace WLMPModels
+namespace MovieMakerSplitter.WLMPModels
 {
     [XmlRoot(ElementName = "ThemeOperationLog")]
     public class ThemeOperationLog

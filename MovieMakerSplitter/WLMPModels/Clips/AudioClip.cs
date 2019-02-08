@@ -2,10 +2,10 @@
 using System.Xml.Serialization;
 using System.Collections.Generic;
 
-namespace WLMPModels.Clips
+namespace MovieMakerSplitter.WLMPModels.Clips
 {
-    [XmlRoot(ElementName = "VideoClip")]
-    public class VideoClip : IClip
+    [XmlRoot(ElementName = "AudioClip")]
+    public class AudioClip : IClip
     {
         [XmlElement(ElementName = "Effects")]
         public string Effects { get; set; }
@@ -20,7 +20,7 @@ namespace WLMPModels.Clips
         public int ExtentID { get; set; }
 
         [XmlAttribute(AttributeName = "gapBefore")]
-        public string GapBefore { get; set; }
+        public double GapBefore { get; set; }
 
         [XmlAttribute(AttributeName = "mediaItemID")]
         public string MediaItemID { get; set; }
@@ -34,17 +34,19 @@ namespace WLMPModels.Clips
         [XmlAttribute(AttributeName = "speed")]
         public string Speed { get; set; }
 
-        [XmlAttribute(AttributeName = "stabilizationMode")]
-        public string StabilizationMode { get; set; }
-
-        public override double TotalDuration()
+        public override ClipType getClipType()
         {
-            return (OutTime - InTime);
+            return ClipType.Audio;
         }
 
         public override double TotalGapBefore()
         {
-            return 0;
+            return GapBefore;
+        }
+
+        public override double TotalDuration()
+        {
+            return (OutTime - InTime);
         }
     }
 }

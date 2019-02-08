@@ -1,11 +1,11 @@
-﻿using System;
+﻿using MovieMakerSplitter.WLMPModels;
+using MovieMakerSplitter.WLMPModels.Clips;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using WLMPModels;
-using WLMPModels.Clips;
 
 namespace MovieMakerSplitter.ViewModels.Helpers
 {
@@ -14,19 +14,21 @@ namespace MovieMakerSplitter.ViewModels.Helpers
         public ExtentRef extentRef = null;
         public IClip iclip = null;
 
-        public string Name { get; set; }
+        public ClipType ClipType { get; set; }
+        public double Width { get; set; }
 
-        public ExtentRefWrapper(ExtentRef _extentRef, IClip _clip)
+        public bool IsImage
         {
-            extentRef = _extentRef;
-            iclip = _clip;
+            get { return ClipType == ClipType.Image; }
+        }
+        public bool IsTitle
+        {
+            get { return ClipType == ClipType.Title; }
+        }
 
-            if (iclip.GetWidth() < 0)
-            {
-                var t = 1;
-            }
-
-            Name = iclip.ToString();
+        public bool IsElse
+        {
+            get { return ClipType != ClipType.Image && ClipType != ClipType.Title; }
         }
     }
 }

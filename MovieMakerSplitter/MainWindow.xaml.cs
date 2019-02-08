@@ -1,5 +1,6 @@
 ﻿using MovieMakerSplitter.BaseViewModel;
 using MovieMakerSplitter.ViewModels;
+using MovieMakerSplitter.WLMPModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +18,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 using System.Xml.Serialization;
-using WLMPModels;
 
 namespace MovieMakerSplitter
 {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Xml.Serialization;
 using System.Collections.Generic;
-using WLMPModels.Clips;
+using MovieMakerSplitter.WLMPModels.Clips;
 
-namespace WLMPModels
+namespace MovieMakerSplitter.WLMPModels
 {
     [XmlRoot(ElementName = "Extents")]
     public class Extents

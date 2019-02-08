@@ -78,6 +78,34 @@
     <Compile Include="BaseViewModel\EventRaiser.cs" />
     <Compile Include="BaseViewModel\IPageViewModel.cs" />
     <Compile Include="BaseViewModel\RelayCommand.cs" />
+    <Compile Include="StaticData.cs" />
+    <Compile Include="WLMPModels\AudioDuckingProperties.cs" />
+    <Compile Include="WLMPModels\BoundPlaceholder.cs" />
+    <Compile Include="WLMPModels\BoundPlaceholders.cs" />
+    <Compile Include="WLMPModels\BoundProperties.cs" />
+    <Compile Include="WLMPModels\BoundPropertyBool.cs" />
+    <Compile Include="WLMPModels\BoundPropertyFloat.cs" />
+    <Compile Include="WLMPModels\BoundPropertyFloatElement.cs" />
+    <Compile Include="WLMPModels\BoundPropertyFloatSet.cs" />
+    <Compile Include="WLMPModels\BoundPropertyInt.cs" />
+    <Compile Include="WLMPModels\BoundPropertyString.cs" />
+    <Compile Include="WLMPModels\BoundPropertyStringElement.cs" />
+    <Compile Include="WLMPModels\BoundPropertyStringSet.cs" />
+    <Compile Include="WLMPModels\Clips\AudioClip.cs" />
+    <Compile Include="WLMPModels\Clips\IClip.cs" />
+    <Compile Include="WLMPModels\Clips\ImageClip.cs" />
+    <Compile Include="WLMPModels\Clips\TitleClip.cs" />
+    <Compile Include="WLMPModels\Clips\VideoClip.cs" />
+    <Compile Include="WLMPModels\Effects.cs" />
+    <Compile Include="WLMPModels\ExtentRef.cs" />
+    <Compile Include="WLMPModels\ExtentRefs.cs" />
+    <Compile Include="WLMPModels\Extents.cs" />
+    <Compile Include="WLMPModels\ExtentSelector.cs" />
+    <Compile Include="WLMPModels\MediaItem.cs" />
+    <Compile Include="WLMPModels\MediaItems.cs" />
+    <Compile Include="WLMPModels\Project.cs" />
+    <Compile Include="WLMPModels\TextEffect.cs" />
+    <Compile Include="WLMPModels\ThemeOperationLog.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -121,12 +149,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WLMPModels\WLMPModels.csproj">
-      <Project>{caeb20be-be76-4a6f-ab0a-157746757ec6}</Project>
-      <Name>WLMPModels</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">

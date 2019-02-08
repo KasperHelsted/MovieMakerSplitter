@@ -1,6 +1,8 @@
 ﻿using Microsoft.Win32;
 using MovieMakerSplitter.BaseViewModel;
 using MovieMakerSplitter.ViewModels.Helpers;
+using MovieMakerSplitter.WLMPModels;
+using MovieMakerSplitter.WLMPModels.Clips;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,21 +15,17 @@ using System.Windows;
 using System.Windows.Input;
 using System.Xml;
 using System.Xml.Serialization;
-using WLMPModels;
-using WLMPModels.Clips;
 
 namespace MovieMakerSplitter.ViewModels
 {
     class MainViewModel : BaseViewModel.BaseViewModel
     {
-        private Project project = null;
-
         public BoundPlaceholder Texts { get; set; } = null;
         public BoundPlaceholder Audios { get; set; } = null;
 
         #region Medias
-        public List<ExtentRefWrapper> _medias = new List<ExtentRefWrapper>();
-        public List<ExtentRefWrapper> Medias
+        public List<ExtentRef> _medias = new List<ExtentRef>();
+        public List<ExtentRef> Medias
         {
             get
             {
@@ -57,94 +55,69 @@ namespace MovieMakerSplitter.ViewModels
         }
         #endregion
 
-        public ICommand GoTo2
+        public ICommand IOpenFile
         {
             get
             {
                 return new RelayCommand(x =>
                 {
-                    OpenFile();
+                    OpenFileDialog dlg = new OpenFileDialog();
+
+                    dlg.DefaultExt = ".wlmp";
+                    dlg.Filter = "Windows Movie Maker Projects (*.wlmp)|*.wlmp";
+
+                    Nullable<bool> result = dlg.ShowDialog();
+
+                    if (result == true)
+                    {
+
+                        OpenFile(dlg.FileName);
+                    }
                 });
             }
         }
 
-        private void OpenFile()
+        private void OpenFile(string path)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
-
-            dlg.DefaultExt = ".wlmp";
-            dlg.Filter = "Windows Movie Maker Projects (*.wlmp)|*.wlmp";
-
-            Nullable<bool> result = dlg.ShowDialog();
-
-            if (result == true)
+            try
             {
-                try
+                StreamReader str = new StreamReader(path);
+                XmlSerializer xSerializer = new XmlSerializer(typeof(Project));
+                StaticData.project = (Project)xSerializer.Deserialize(str);
+                str.Close();
+
+                Title = StaticData.project.Name;
+
+                foreach (var BoundPlaceholder in StaticData.project.BoundPlaceholders.BoundPlaceholder)
                 {
-                    StreamReader str = new StreamReader(dlg.FileName);
-                    XmlSerializer xSerializer = new XmlSerializer(typeof(Project));
-                    project = (Project)xSerializer.Deserialize(str);
-                    str.Close();
-
-                    Title = project.Name;
-
-                    foreach (var BoundPlaceholder in project.BoundPlaceholders.BoundPlaceholder)
+                    switch (BoundPlaceholder.PlaceholderID)
                     {
-                        if (BoundPlaceholder.PlaceholderID == "Main")
-                        {
-                            Medias = GetExtentRefWrappers(GetExtentSelector(BoundPlaceholder.ExtentID));
-                        }
-                        else if (BoundPlaceholder.PlaceholderID == "SoundTrack")
-                        {
-
-                        }
+                        case "Main":
+                            Medias = GetExtentRefs(GetExtentSelector(BoundPlaceholder.ExtentID));
+                            break;
+                        case "SoundTrack":
+                            break;
                     }
+                }
 
-                }
-                catch (XmlException)
-                {
-                    MessageBox.Show("Unable to open project", "Oopsie");
-                }
+            }
+            catch (XmlException)
+            {
+                MessageBox.Show("Unable to open project", "Oopsie");
             }
         }
 
-        private List<ExtentRefWrapper> GetExtentRefWrappers(ExtentSelector extentSelector)
+
+        private List<ExtentRef> GetExtentRefs(ExtentSelector extentSelector)
         {
-            List<ExtentRef> extentRef = extentSelector.ExtentRefs.ExtentRef;
-
-            return extentRef.Select(x => GetExtentRefWrapper(x)).ToList();
-
-        }
-
-        private ExtentRefWrapper GetExtentRefWrapper(ExtentRef extentRef)
-        {
-            return new ExtentRefWrapper(extentRef, GetMedia(extentRef));
-        }
-
-        private IClip GetMedia(ExtentRef extentRef)
-        {
-            foreach (AudioClip audioClip in project.Extents.AudioClip)
-                if (audioClip.ExtentID == extentRef.Id)
-                    return audioClip;
-            foreach (VideoClip videoClip in project.Extents.VideoClip)
-                if (videoClip.ExtentID == extentRef.Id)
-                    return videoClip;
-            foreach (ImageClip imageClip in project.Extents.ImageClip)
-                if (imageClip.ExtentID == extentRef.Id)
-                    return imageClip;
-            foreach (TitleClip titleClip in project.Extents.TitleClip)
-                if (titleClip.ExtentID == extentRef.Id)
-                    return titleClip;
-
-            MessageBox.Show("test");
-            return null;
+            return extentSelector.ExtentRefs.ExtentRef;
         }
 
         private ExtentSelector GetExtentSelector(int ExtentID)
         {
-            foreach (ExtentSelector s in project.Extents.ExtentSelector)
-                if (s.ExtentID == ExtentID)
-                    return s;
+            foreach (ExtentSelector extentSelector in StaticData.project.Extents.ExtentSelector)
+                if (extentSelector.ExtentID == ExtentID)
+                    return extentSelector;
             return null;
         }
     }
